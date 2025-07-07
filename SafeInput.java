@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Scanner;
 
 public class SafeInput {
@@ -164,5 +165,45 @@ public class SafeInput {
         } while (userRangedDouble < low || userRangedDouble > high);
 
         return userRangedDouble;
+    }
+
+    /**
+     * Prompts the user with a yes/no question and returns their confirmation as a boolean.
+     * Repeats until the user enters one of the valid responses: Y, YES, N, or NO.
+     *
+     * @param pipe   a Scanner opened to read from System.in
+     * @param prompt the message to display (e.g. "Continue? (Y/N)")
+     * @return       true if the user answers Y or YES; false if N or NO
+     */
+    public static boolean getYNConfirm(Scanner pipe, String prompt) {
+        final Map<String,Boolean> VALID_ANSWERS = Map.of(
+                "Y", true,
+                "YES", true,
+                "N", false,
+                "NO", false
+        );
+
+        while (true) {
+            System.out.print(prompt + " (Y/N):");
+            // Take the user's answer, trim off extra whitespace, and make it uppercase.
+            String userInput = pipe.nextLine()
+                    .trim();
+
+            // don't throw an error if the user just hits enter.
+            // if blank, warn and re-prompt
+            if (userInput.isEmpty()) {
+                System.out.println("Input cannot be empty. Please answer Y/N.");
+                continue;
+            }
+
+            // Use our map of valid choices to determine if the user gave a valid answer
+            Boolean userChoice = VALID_ANSWERS.get(userInput.toUpperCase());
+
+            if (userChoice != null) { // the user gave a valid choice
+                return userChoice;
+            } else {
+                System.out.println( userInput + " is not a valid response.  Please answer Y/N.");
+            }
+        }
     }
 }
