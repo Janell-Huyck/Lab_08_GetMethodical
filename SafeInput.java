@@ -217,7 +217,7 @@ public class SafeInput {
      */
     public static String getRegExString(Scanner pipe, String prompt, String regEx) {
         while (true) {
-            System.out.print(prompt);
+            System.out.print(prompt + " ");
             String userInput = pipe.nextLine();
             if (userInput.matches(regEx)) {
                 return userInput;
@@ -228,5 +228,39 @@ public class SafeInput {
                 );
             }
         }
+    }
+
+    /**
+     * Prints a decorative header box around the given message, centered
+     * within a fixed width of stars.
+     *
+     * @param msg the message to display in the header
+     */
+    public static void prettyHeader(String msg) {
+        final int SCREEN_WIDTH = 60;
+        final int SIDE_STARS = 3;                 // number of stars on each side of the message line
+        String horizontalBorder = "*".repeat(SCREEN_WIDTH);
+        String sideBorder = "*".repeat(SIDE_STARS);
+        String middleLine;
+
+        // Top border
+        System.out.println(horizontalBorder);
+
+        // Calculate padding
+        int messageLength   = msg.length();
+        int availableSpace  = SCREEN_WIDTH - (SIDE_STARS * 2) - messageLength;
+        int leftPadding     = availableSpace / 2 + (availableSpace % 2);  // extra space on left if odd
+        int rightPadding    = availableSpace - leftPadding;
+
+        // Middle line
+        middleLine = sideBorder
+                + " ".repeat(leftPadding)
+                + msg
+                + " ".repeat(rightPadding)
+                + sideBorder;
+        System.out.println(middleLine);
+
+        // Bottom border
+        System.out.println(horizontalBorder);
     }
 }
