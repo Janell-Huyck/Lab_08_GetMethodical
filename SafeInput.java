@@ -129,4 +129,40 @@ public class SafeInput {
 
         return userRangedInt;
     }
+
+    /**
+     * Prompts the user until they enter a double within the inclusive range [low–high].
+     * Appends the range to the supplied prompt and uses SafeInput.getInt() to validate input.
+     *
+     * @param pipe   a Scanner opened to read from System.in
+     * @param prompt the base message to display; the range “[low–high]” will be appended
+     * @param low    the minimum acceptable double value (inclusive)
+     * @param high   the maximum acceptable double value (inclusive)
+     * @return       a valid double between low and high, inclusive
+     */
+    public static double getRangedDouble(Scanner pipe, String prompt, double low, double high) {
+
+        // Guard against impossible requests
+        if (low > high) {
+            throw new IllegalArgumentException(
+                    "getRangedDouble: invalid bounds — low (" + low + ") must be <= high (" + high + ")");
+        }
+
+        double userRangedDouble;
+        String rangedPrompt = prompt + " [" + low + " to " + high + "]";
+
+        do {
+            userRangedDouble = SafeInput.getDouble(pipe, rangedPrompt);
+            if (userRangedDouble < low) {
+                System.out.println(
+                        userRangedDouble + " is below the minimum allowed value of " + low + ". Please try again.");
+            }
+            else if (userRangedDouble > high) {
+                System.out.println(
+                        userRangedDouble + " is above the maximum allowed value of " + high + ". Please try again.");
+            }
+        } while (userRangedDouble < low || userRangedDouble > high);
+
+        return userRangedDouble;
+    }
 }
