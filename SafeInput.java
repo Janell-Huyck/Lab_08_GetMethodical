@@ -169,7 +169,7 @@ public class SafeInput {
 
     /**
      * Prompts the user with a yes/no question and returns their confirmation as a boolean.
-     * Repeats until the user enters one of the valid responses: Y, YES, N, or NO.
+     * Repeats until the user enters one of the valid responses (case-insensitive): Y, YES, N, or NO.
      *
      * @param pipe   a Scanner opened to read from System.in
      * @param prompt the message to display (e.g. "Continue? (Y/N)")
@@ -203,6 +203,29 @@ public class SafeInput {
                 return userChoice;
             } else {
                 System.out.println( userInput + " is not a valid response.  Please answer Y/N.");
+            }
+        }
+    }
+
+    /**
+     * Prompts the user until they enter a string that matches the given regular expression.
+     *
+     * @param pipe   a Scanner opened to read from System.in
+     * @param prompt the message to display to the user (e.g. "SSN: ")
+     * @param regEx  the regex pattern the input must match
+     * @return       the first user input that matches the pattern
+     */
+    public static String getRegExString(Scanner pipe, String prompt, String regEx) {
+        while (true) {
+            System.out.print(prompt);
+            String userInput = pipe.nextLine();
+            if (userInput.matches(regEx)) {
+                return userInput;
+            } else {
+                System.out.println(
+                        "Sorry. \"" + userInput + "\" does not match the correct pattern. "
+                                + "The pattern we need to match is \"" + regEx + "\""
+                );
             }
         }
     }
